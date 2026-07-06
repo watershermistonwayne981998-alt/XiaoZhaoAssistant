@@ -114,14 +114,16 @@ class AppRepository(
      * 初始化默认关键词规则（首次安装时调用）
      */
     suspend fun seedDefaultKeywordsIfEmpty() {
+            suspend fun seedDefaultKeywordsIfEmpty() {
         if (keywordDao.count() > 0) return
         val defaults = mutableListOf<KeywordRuleEntity>()
-            KeywordSets.TIME_WORDS.forEach { defaults.add(KeywordRuleEntity(keyword = it, type = KeywordRuleEntity.TYPE_TIME)) }
-    KeywordSets.ACTION_WORDS.forEach { defaults.add(KeywordRuleEntity(keyword = it, type = KeywordRuleEntity.TYPE_ACTION)) }
-    KeywordSets.WORK_WORDS.forEach { defaults.add(KeywordRuleEntity(keyword = it, type = KeywordRuleEntity.TYPE_WORK)) }
-    KeywordSets.URGENT_WORDS.forEach { defaults.add(KeywordRuleEntity(keyword = it, type = KeywordRuleEntity.TYPE_URGENT)) }
-
+        KeywordSets.TIME_WORDS.forEach { defaults.add(KeywordRuleEntity(keyword = it, type = KeywordRuleEntity.TYPE_TIME)) }
+        KeywordSets.ACTION_WORDS.forEach { defaults.add(KeywordRuleEntity(keyword = it, type = KeywordRuleEntity.TYPE_ACTION)) }
+        KeywordSets.WORK_WORDS.forEach { defaults.add(KeywordRuleEntity(keyword = it, type = KeywordRuleEntity.TYPE_WORK)) }
+        KeywordSets.URGENT_WORDS.forEach { defaults.add(KeywordRuleEntity(keyword = it, type = KeywordRuleEntity.TYPE_URGENT)) }
         keywordDao.insertAll(defaults)
+    }
+
     }
 
     // ===== Bulk operations =====
