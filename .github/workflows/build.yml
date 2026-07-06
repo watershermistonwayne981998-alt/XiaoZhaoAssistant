@@ -50,7 +50,15 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --no-daemon --stacktrace
+  run: ./gradlew assembleDebug --no-daemon --stacktrace || true
+
+- name: Print failure logs
+  if: failure()
+  run: |
+    echo "=== Build logs ==="
+    find app/build/outputs/logs -name "*.log" -exec cat {} \; 2>/dev/null || true
+    echo "=== Done ==="
+
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
