@@ -65,20 +65,50 @@ class NotificationListener : NotificationListenerService() {
 
         val appName = NotificationUtils.getAppName(this, sbn.packageName)
 
-        val entity = NotificationEntity(
-            packageName = sbn.packageName,
-            appName = appName,
-            title = extracted.title,
-            text = extracted.text,
-            bigText = extracted.bigText,
-            postTime = sbn.postTime,
-            notificationKey = sbn.key,
-            notificationId = sbn.id,
-            isRead = false,
-            isConvertedToTask = false,
-            isImportant = false,
-            createdAt = System.currentTimeMillis()
-        )
+        // 钉钉通知深度解析
+        val isDingTalk = sbn.packageName == DingTalkNotificationParser.DINGTALK_PACKAGE
+        val dingTalkMsg = if (isDingTalk) {
+            DingTalkNotificationParser.parse(sbn.notification)
+        } else null
+
+        val entity = if (dingTalkMsg != null) {
+            NotificationEntity(
+                packageName = sbn.packageName,
+                appName = appName,
+                title = extracted.title,
+                text = extracted.text,
+                bigText = extracted.bigText,
+                postTime = sbn.postTime,
+                notificationKey = sbn.key,
+                notificationId = sbn.id,
+                isRead = false,
+                isConvertedToTask = false,
+                isImportant = false,
+                createdAt = System.currentTimeMillis(),
+                sender = dingTalkMsg.sender,
+                conversationName = dingTalkMsg.conversationName,
+                messageType = dingTalkMsg.type.name,
+                isGroup = dingTalkMsg.isGroup,
+                atAll = dingTalkMsg.atAll,
+                atMe = dingTalkMsg.atMe,
+                fullText = dingTalkMsg.fullText
+            )
+        } else {
+            NotificationEntity(
+                packageName = sbn.packageName,
+                appName = appName,
+                title = extracted.title,
+                text = extracted.text,
+                bigText = extracted.bigText,
+                postTime = sbn.postTime,
+                notificationKey = sbn.key,
+                notificationId = sbn.id,
+                isRead = false,
+                isConvertedToTask = false,
+                isImportant = false,
+                createdAt = System.currentTimeMillis()
+            )
+        }
 
         // 非阻塞投递到队列
         scope.launch {
@@ -135,13 +165,35 @@ class NotificationListener : NotificationListenerService() {
         allKeywords.addAll(repo.keywordsByType(KeywordRuleEntity.TYPE_URGENT))
 
         val engine = TodoRuleEngine(allKeywords)
-        val candidate = engine.generateCandidateTask(
-            title = entity.title,
-            text = entity.text,
-            bigText = entity.bigText,
-            sourceNotificationId = rowId,
-            sourceApp = entity.appName
-        )
+
+        // 钉钉通知使用专用解析方法
+        val candidate = if (entity.packageName == DingTalkNotificationParser.DINGTALK_PACKAGE && !entity.fullText.isNullOrBlank()) {
+            val dingTalkMsg = DingTalkMessage(
+                notificationId = entity.notificationId,
+                postTime = entity.postTime,
+                sender = entity.sender ?: entity.title,
+                conversationName = entity.conversationName ?: entity.title,
+                content = entity.text,
+                fullText = entity.fullText ?: "${entity.title} ${entity.text}",
+                type = try { MessageType.valueOf(entity.messageType ?: "TEXT") } catch (_: Exception) { MessageType.TEXT },
+                isGroup = entity.isGroup,
+                atAll = entity.atAll,
+                atMe = entity.atMe,
+                atList = emptyList(),
+                conversationId = "",
+                messageId = "",
+                rawExtras = ""
+            )
+            engine.generateCandidateFromDingTalk(dingTalkMsg)
+        } else {
+            engine.generateCandidateTask(
+                title = entity.title,
+                text = entity.text,
+                bigText = entity.bigText,
+                sourceNotificationId = rowId,
+                sourceApp = entity.appName
+            )
+        }
 
         if (candidate != null) {
             // 5. 保存候选待办（状态 = PENDING 待确认）

@@ -54,5 +54,27 @@ data class NotificationEntity(
     val isImportant: Boolean = false,
 
     @ColumnInfo(name = "created_at")
-    val createdAt: Long = System.currentTimeMillis()
+    val createdAt: Long = System.currentTimeMillis(),
+
+    // 钉钉消息解析字段
+    @ColumnInfo(name = "sender")
+    val sender: String? = null,
+
+    @ColumnInfo(name = "conversation_name")
+    val conversationName: String? = null,
+
+    @ColumnInfo(name = "message_type")
+    val messageType: String? = null,
+
+    @ColumnInfo(name = "is_group")
+    val isGroup: Boolean = false,
+
+    @ColumnInfo(name = "at_all")
+    val atAll: Boolean = false,
+
+    @ColumnInfo(name = "at_me")
+    val atMe: Boolean = false,
+
+    @ColumnInfo(name = "full_text")
+    val fullText: String? = null
 )

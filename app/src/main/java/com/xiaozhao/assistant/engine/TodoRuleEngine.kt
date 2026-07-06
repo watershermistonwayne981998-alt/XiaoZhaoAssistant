@@ -105,4 +105,46 @@ class TodoRuleEngine(
             createdAt = now
         )
     }
+
+    /**
+     * 从钉钉消息生成候选待办（专用方法，使用 DingTalkMessage 对象）
+     */
+    fun generateCandidateFromDingTalk(dingTalkMsg: com.xiaozhao.assistant.service.DingTalkMessage): TaskEntity? {
+        val searchText = dingTalkMsg.fullText.lowercase()
+
+        val matchedActions = actionWords.filter { searchText.contains(it.lowercase()) }
+        val matchedWork = workWords.filter { searchText.contains(it.lowercase()) }
+        val matchedTimes = timeWords.filter { searchText.contains(it.lowercase()) }
+        val matchedUrgent = urgentWords.filter { searchText.contains(it.lowercase()) }
+
+        // 检查是否包含动作词和工作词（必须同时满足）
+        val isCandidate = matchedActions.isNotEmpty() && matchedWork.isNotEmpty()
+        if (!isCandidate) return null
+
+        // 提取截止时间
+        val dueTime = if (matchedTimes.isNotEmpty()) {
+            TimeParser.parseDueTime(searchText)
+        } else null
+
+        // 判断优先级（钉钉消息：@我或@所有人 → 重要）
+        val isImportant = matchedUrgent.isNotEmpty() || dingTalkMsg.atMe || dingTalkMsg.atAll
+
+        // 生成待办标题
+        val taskTitle = if (dingTalkMsg.content.isNotBlank()) {
+            if (dingTalkMsg.content.length > 50) dingTalkMsg.content.substring(0, 50) + "…" else dingTalkMsg.content
+        } else {
+            dingTalkMsg.sender
+        }
+
+        return TaskEntity(
+            title = taskTitle,
+            sourceNotificationId = dingTalkMsg.notificationId.toLong(),
+            sourceApp = "钉钉",
+            originalText = dingTalkMsg.fullText,
+            dueTime = dueTime,
+            priority = if (isImportant) 2 else 1,
+            status = TaskEntity.STATUS_PENDING,
+            createdAt = System.currentTimeMillis()
+        )
+    }
 }
