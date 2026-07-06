@@ -49,8 +49,10 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Build Debug APK
-  run: ./gradlew assembleDebug --no-daemon --stacktrace || true
+           - name: Build Debug APK
+        run: ./gradlew assembleDebug --no-daemon --stacktrace
+        continue-on-error: true
+
 
 - name: Print failure logs
   if: failure()
