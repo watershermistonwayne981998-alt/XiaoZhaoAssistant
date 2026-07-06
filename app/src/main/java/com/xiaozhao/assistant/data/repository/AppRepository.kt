@@ -116,10 +116,11 @@ class AppRepository(
     suspend fun seedDefaultKeywordsIfEmpty() {
         if (keywordDao.count() > 0) return
         val defaults = mutableListOf<KeywordRuleEntity>()
-        defaults.add(KeywordRuleEntity(keyword = it, type = KeywordRuleEntity.TYPE_TIME))
-        defaults.add(KeywordRuleEntity(keyword = it, type = KeywordRuleEntity.TYPE_ACTION))
-        defaults.add(KeywordRuleEntity(keyword = it, type = KeywordRuleEntity.TYPE_WORK))
-        defaults.add(KeywordRuleEntity(keyword = it, type = KeywordRuleEntity.TYPE_URGENT))
+            KeywordSets.TIME_WORDS.forEach { defaults.add(KeywordRuleEntity(keyword = it, type = KeywordRuleEntity.TYPE_TIME)) }
+    KeywordSets.ACTION_WORDS.forEach { defaults.add(KeywordRuleEntity(keyword = it, type = KeywordRuleEntity.TYPE_ACTION)) }
+    KeywordSets.WORK_WORDS.forEach { defaults.add(KeywordRuleEntity(keyword = it, type = KeywordRuleEntity.TYPE_WORK)) }
+    KeywordSets.URGENT_WORDS.forEach { defaults.add(KeywordRuleEntity(keyword = it, type = KeywordRuleEntity.TYPE_URGENT)) }
+
         keywordDao.insertAll(defaults)
     }
 
