@@ -105,7 +105,6 @@ class TodoRuleEngine(
             createdAt = now
         )
     }
-
     /**
      * 从钉钉消息生成候选待办（专用方法，使用 DingTalkMessage 对象）
      */
