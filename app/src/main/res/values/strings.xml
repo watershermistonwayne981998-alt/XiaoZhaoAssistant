@@ -1,0 +1,66 @@
+<resources>
+    <string name="app_name">小赵手机事务助手</string>
+
+    <!-- 底部导航 -->
+    <string name="nav_home">首页</string>
+    <string name="nav_message">消息</string>
+    <string name="nav_todo">待办</string>
+    <string name="nav_settings">设置</string>
+
+    <!-- 首页 -->
+    <string name="home_today_todo">今日待办</string>
+    <string name="home_unread">未处理消息</string>
+    <string name="home_important">重要消息</string>
+    <string name="home_recent_todo">最近待办</string>
+    <string name="home_no_todo">暂无待办，享受清净的一天</string>
+
+    <!-- 消息页 -->
+    <string name="msg_search_hint">搜索关键词…</string>
+    <string name="msg_all_apps">全部应用</string>
+    <string name="msg_empty">暂无通知消息</string>
+    <string name="msg_to_todo">转待办</string>
+
+    <!-- 待办页 -->
+    <string name="todo_tab_pending">待确认</string>
+    <string name="todo_tab_today">今日待办</string>
+    <string name="todo_tab_overdue">已逾期</string>
+    <string name="todo_tab_done">已完成</string>
+    <string name="todo_empty">暂无待办</string>
+    <string name="todo_confirm">确认</string>
+    <string name="todo_complete">完成</string>
+    <string name="todo_delete">删除</string>
+    <string name="todo_edit_due">修改截止时间</string>
+
+    <!-- 设置页 -->
+    <string name="settings_listener_status">通知监听权限</string>
+    <string name="settings_listener_enabled">已开启</string>
+    <string name="settings_listener_disabled">未开启</string>
+    <string name="settings_open_listener">前往通知使用权设置</string>
+    <string name="settings_whitelist">App 白名单管理</string>
+    <string name="settings_keywords">待办关键词管理</string>
+    <string name="settings_export">导出数据（JSON）</string>
+    <string name="settings_clear">清空所有数据</string>
+    <string name="settings_background">后台运行设置引导</string>
+    <string name="settings_collection_on">采集已开启</string>
+    <string name="settings_collection_off">采集已关闭</string>
+    <string name="settings_toggle_collection">开启/关闭采集</string>
+
+    <!-- 后台引导 -->
+    <string name="bg_title">华为 / HarmonyOS 后台运行设置</string>
+    <string name="bg_step1">1. 打开「设置 → 应用 → 小赵手机事务助手 → 耗电详情」，选择「无限制」</string>
+    <string name="bg_step2">2. 打开「设置 → 应用 → 小赵手机事务助手 → 启动管理」，关闭「自动管理」，手动开启全部三个开关</string>
+    <string name="bg_step3">3. 打开「设置 → 电池 → 更多电池设置」，确保已关闭「休眠时始终保持网络连接」之外的省电限制</string>
+    <string name="bg_step4">4. 在最近任务列表中，下拉小赵助手卡片加锁，防止被一键清理</string>
+    <string name="bg_step5">5. 如果通知监听服务被系统杀死，请重新打开 App 并检查通知使用权是否仍然开启</string>
+    <string name="bg_open_battery">打开电池优化设置</string>
+    <string name="bg_open_launch">打开启动管理设置</string>
+
+    <!-- 通用 -->
+    <string name="confirm">确认</string>
+    <string name="cancel">取消</string>
+    <string name="ok">好的</string>
+    <string name="delete_confirm">确定删除？此操作不可撤销</string>
+    <string name="clear_confirm">确定清空所有通知和待办数据？此操作不可撤销</string>
+    <string name="export_success">数据已导出到所选位置</string>
+    <string name="export_failed">导出失败</string>
+</resources>
