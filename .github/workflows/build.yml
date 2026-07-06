@@ -51,8 +51,7 @@ jobs:
 
            - name: Build Debug APK
         run: ./gradlew assembleDebug --no-daemon --stacktrace
-        continue-on-error: true
-
+       
 
 - name: Print failure logs
   if: failure()
