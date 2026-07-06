@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">小赵手机事务助手</string>
+    <string name="accessibility_service_description">用于监听通知消息、识别待办提醒，并在本机进行辅助处理。</string>
+    <string name="accessibility_service_summary">小赵助手通知监听服务</string>
 
     <!-- 底部导航 -->
     <string name="nav_home">首页</string>

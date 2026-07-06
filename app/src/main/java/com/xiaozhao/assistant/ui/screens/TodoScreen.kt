@@ -266,7 +266,7 @@ private fun DueTimePickerDialog(
         AlertDialog(
             onDismissRequest = onDismiss,
             title = { Text("选择时间") },
-            text = { TimePicker(state = timeState, is24Hour = true) },
+            text = { TimePicker(state = timeState) },
             confirmButton = {
                 TextButton(onClick = {
                     val date = pickedDate ?: System.currentTimeMillis()

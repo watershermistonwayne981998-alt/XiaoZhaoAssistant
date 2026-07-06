@@ -4,6 +4,6 @@
     android:accessibilityFeedbackType="feedbackGeneric"
     android:accessibilityFlags="flagDefault|flagReportViewIds"
     android:canRetrieveWindowContent="true"
-    android:description="读取钉钉聊天界面消息，用于生成待办事项"
+    android:description="@string/accessibility_service_description"
     android:notificationTimeout="100"
     android:packageNames="com.alibaba.android.rimet" />
